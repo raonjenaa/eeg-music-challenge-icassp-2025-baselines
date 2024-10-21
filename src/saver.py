@@ -1,5 +1,5 @@
 import torch
-import wandb
+#import wandb
 import numpy as np
 from time import time
 from pathlib import Path
@@ -31,10 +31,11 @@ class Saver(object):
 
     @staticmethod
     def init_wandb():
-        return
+       pass
 
     def watch_model(self, model):
-        wandb.watch(model, log='all', log_freq=500)
+        pass
+        #wandb.watch(model, log='all', log_freq=500)
 
     def save_configuration(self, config: dict):
         drop_keys = ['loaders', 'samplers', 'scheduler', 'saver']
@@ -91,8 +92,9 @@ class Saver(object):
         """
         Empty the buffer and log all elements
         """
-        wandb.log(self.buffer)
-        self.buffer = {}
+        # wandb.log(self.buffer)
+        # self.buffer = {}
+        pass
 
     def add_scalar(self, name: str, value: float, iter_n: int, iter_name='epoch'):
         """
@@ -105,31 +107,35 @@ class Saver(object):
         """
         Add a confusion matrix to buffer
         """
-        cm = wandb.plot.confusion_matrix(y_true=labels, preds=predictions)
-        self.buffer[name] = cm
-        self.buffer[iter_name] = iter_n
+        # cm = wandb.plot.confusion_matrix(y_true=labels, preds=predictions)
+        # self.buffer[name] = cm
+        # self.buffer[iter_name] = iter_n
+        pass
 
     def add_images(self, name: str, images_vector: torch.Tensor, iter_n: int, iter_name='epoch'):
         """
         Add a scalar to buffer
         """
-        images = wandb.Image(images_vector, caption=name)
-        self.buffer[name] = images
-        self.buffer[iter_name] = iter_n
+        # images = wandb.Image(images_vector, caption=name)
+        # self.buffer[name] = images
+        # self.buffer[iter_name] = iter_n
+        pass
 
     def log_scalar(self, name: str, value: float, iter_n: int, iter_name='epoch'):
         '''
         Log loss to wandb
         '''
-        wandb.log({name: value, iter_name: iter_n})
+        # wandb.log({name: value, iter_name: iter_n})
+        pass
 
     def log_images(self, name: str, images_vector: torch.Tensor, iter_n: int, iter_name='epoch'):
         '''
         Log images to wandb
         image_vector.shape = (C, W, H)
-        '''
-        images = wandb.Image(images_vector, caption=name)
-        wandb.log({name: images, iter_name: iter_n})
+        # '''
+        # images = wandb.Image(images_vector, caption=name)
+        # wandb.log({name: images, iter_name: iter_n})
+        pass
 
     def add_plot(self, name: str, fig, iter_n: int, iter_name='epoch'):
         """

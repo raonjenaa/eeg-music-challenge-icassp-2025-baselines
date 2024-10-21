@@ -54,7 +54,7 @@ def parse():
     parser.add_argument('--resume')
     parser.add_argument('--epochs', type=int, default=150)
     parser.add_argument('--seed', type=int, default=42)
-    parser.add_argument('--device', type=str, choices=['cuda:0', 'cuda:1', 'cpu'], default='cuda:0')
+    parser.add_argument('--device', type=str, choices=['cuda:0', 'cuda:1', 'cpu'], default='cpu')
     parser.add_argument('--multi-gpu', action='store_true')
     parser.add_argument('--overfit-batch', action='store_true')
     parser.add_argument('--voting_strategy', type=str, default='mean', choices=['mean', 'max', 'median', 'min', 'majority'])

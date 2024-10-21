@@ -29,6 +29,7 @@ class ResidualNan(Exception):
 def interpolate(raw_data):
     
     # replace very large values with nans
+    # 절대값이 100 넘으면, NaN값으로 대체
     raw_data[abs(raw_data) > 1e2] = np.nan
 
     # get indices of nans
@@ -43,7 +44,7 @@ def interpolate(raw_data):
         # get value after the point
         after = raw_data[channel, timepoint-1]
 
-        # interpolate
+        # interpolate, 보간법으로 Nan값 대체 
         raw_data[channel, timepoint] = (before + after) / 2
 
     nan_indices = np.where(np.isnan(raw_data))
@@ -54,7 +55,7 @@ def interpolate(raw_data):
         
     return raw_data
 
-def open_and_interpolate(file):
+def open_and_interpolate(file):#
     raw_file = mne.io.read_raw_fif(file, preload=True)
     raw_data = raw_file.get_data()
     try:

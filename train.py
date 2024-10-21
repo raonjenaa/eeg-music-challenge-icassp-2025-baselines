@@ -1,5 +1,4 @@
 import json
-import wandb
 import argparse
 from pathlib import Path
 import src.config as config
@@ -68,7 +67,7 @@ def parse():
     parser.add_argument('--resume')
     parser.add_argument('--epochs', type=int, default=150)
     parser.add_argument('--seed', type=int, default=42)
-    parser.add_argument('--device', type=str, choices=['cuda:0', 'cuda:1', 'cpu'], default='cuda:0')
+    parser.add_argument('--device', type=str, choices=['cuda:0', 'cuda:1', 'cpu'], default='cpu')
     parser.add_argument('--multi-gpu', action='store_true')
     parser.add_argument('--overfit-batch', action='store_true')
     
@@ -105,13 +104,14 @@ def main(args):
         if args.sweep:
 
             # Init run
-            run = wandb.init(project=args.task, entity=args.entity)
+            #run = wandb.init(project=args.task, entity=args.entity)
 
             # Load parameters
-            sweep_params = dict(wandb.config)
+            #sweep_params = dict(wandb.config)
 
             # Update args
-            args.__dict__.update(sweep_params)
+            #args.__dict__.update(sweep_params)
+            pass
 
         loaders, updated_args = get_loaders(args)
 
@@ -130,33 +130,36 @@ def main(args):
 
         # Run training
         if updated_args.debug:
-            run = wandb.init(project=updated_args.task, entity=updated_args.entity, mode="disabled")
+            # run = wandb.init(project=updated_args.task, entity=updated_args.entity, mode="disabled")
+            pass
         elif not updated_args.sweep:
-            run = wandb.init(project=updated_args.task, entity=updated_args.entity)
+            # run = wandb.init(project=updated_args.task, entity=updated_args.entity)
+            pass
         
         # Save Wandb Configuration
-        args_dict = vars(updated_args)
-        for arg_name, arg in args_dict.items():
-            try:
-                wandb.config[arg_name] = arg
-            except Exception as e:
-                print(f"Could not save {arg_name} to wandb")
-                continue
+        # args_dict = vars(updated_args)
+        # for arg_name, arg in args_dict.items():
+        #     try:
+        #         wandb.config[arg_name] = arg
+        #     except Exception as e:
+        #         print(f"Could not save {arg_name} to wandb")
+        #         continue
         
-        run.name = f"{updated_args.task}_{updated_args.model}_{updated_args.tag}"
+        # run.name = f"{updated_args.task}_{updated_args.model}_{updated_args.tag}"
 
         
         model, metrics = trainer.train(loaders)
 
-        if not updated_args.sweep:
-            # Close saver
-            wandb.finish()
-        else:
-            run.finish()
+        # if not updated_args.sweep:
+        #     # Close saver
+        #     wandb.finish()
+        # else:
+        #     run.finish()
     
     if args.sweep:
         # Run sweep
-        wandb.agent(sweep_id, function=train_func, project=args.task, entity=args.entity)
+        #wandb.agent(sweep_id, function=train_func, project=args.task, entity=args.entity)
+        pass
     else:
         train_func()
 
